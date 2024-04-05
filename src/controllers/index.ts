@@ -1,21 +1,36 @@
 import { Request, Response } from 'express';
 
-const register = (req: Request, res: Response) => {
+const registerIdentity = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Hello, world!' });
 };
 
-const login = (req: Request, res: Response) => {
+const loginIdentity = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Hello, world!' });
 };
 
-const deleteAccount = (req: Request, res: Response) => {
+const deleteIdentity = (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Hello, world!' });
+};
+
+const editIdentity = (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Hello, world!' });
+};
+
+const createApiKeyIdentity = (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Hello, world!' });
+};
+
+const verifyApiKeyIdentity = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Hello, world!' });
 };
 
 const controller = {
-  register,
-  login,
-  deleteAccount,
+  registerIdentity,
+  loginIdentity,
+  deleteIdentity,
+  editIdentity,
+  createApiKeyIdentity,
+  verifyApiKeyIdentity
 };
 
 export default controller;

@@ -1,21 +1,16 @@
 import express, { Router, Request, Response } from 'express';
+import controller from '..controllers';
 
 const router: Router = express.Router();
 
-router.post('/register', (req: Request, res: Response) => {
-  res.send('Hello, world!');
-});
+router.post('/register', controller.registerIdentity);
 
-router.post('/login', (req: Request, res: Response) => {
-  res.json('login');
-});
+router.post('/login', controller.loginIdentity );
 
-router.delete('/delete/{id}', (req: Request, res: Response) => {
-  res.json('delete');
-});
+router.put('/edit/{id}', controller.editIdentity);
 
-router.put('/edit/{id}', (req: Request, res: Response) => {
-  res.json('edit');
-});
+router.post('/createApiKey', controller.createApiKeyIdentity);
+
+router.post('/verifyApiKey', controller.verifyApiKeyIdentity);
 
 export default router;
