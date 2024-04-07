@@ -14,7 +14,7 @@ const registerIdentity = async (req: Request, res: Response) => {
     console.log('identity: ', identity);
     console.log('result: ', result);
 
-    const token = jwt.sign(identity, process.env.JWT_SECRET!);
+    const token = jwt.sign(identity, process.env.JWT_KEY!);
 
     res.status(200).json(token);
   } catch (error) {
