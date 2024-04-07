@@ -3,7 +3,7 @@ import { IIdentity } from 'cesieats-service-types/src/identity';
 import { Identity } from '../database';
 import jwt from 'jsonwebtoken';
 
-//Crée un compte et renvoie jwt
+//Crée une identité et renvoie jwt
 const registerIdentity = async (req: Request, res: Response) => {
   try {
     const identity: IIdentity = {
@@ -24,7 +24,7 @@ const registerIdentity = async (req: Request, res: Response) => {
   }
 };
 
-//Connecte à un compte et renvoie jwt
+//Connecte à une identité et renvoie jwt
 const loginIdentity = async (req: Request, res: Response) => {
   try {
     const identity: IIdentity = {
@@ -46,7 +46,7 @@ const loginIdentity = async (req: Request, res: Response) => {
   }
 };
 
-//Supprime un compte
+//Supprime une identité
 const deleteIdentity = async (req: Request, res: Response) => {
   try {
     const result = await Identity.deleteOne({email: res.locals.identity.email});
@@ -62,7 +62,7 @@ const deleteIdentity = async (req: Request, res: Response) => {
   }
 };
 
-//Edite un compte
+//Edite une identité
 const editIdentity = async (req: Request, res: Response) => {
   try {
     await Identity.replaceOne({email: res.locals.identity.email}, {password: req.body.newPassword});
@@ -74,7 +74,7 @@ const editIdentity = async (req: Request, res: Response) => {
   }
 };
 
-//Crée et associe une clé Appi au compte connecté
+//Crée et associe une clé Appi à une identité connectée
 const createApiKeyIdentity = async (req: Request, res: Response) => {
   try {
     var apiKey = crypto.randomUUID();
@@ -90,7 +90,7 @@ const createApiKeyIdentity = async (req: Request, res: Response) => {
   }
 };
 
-//Vérifie la clé Api d'un compte
+//Vérifie la clé Api d'une identité
 const verifyApiKeyIdentity = async (req: Request, res: Response) => {
   try {
     if(Identity.find({apiKey: res.locals.identity.apiKey}) != null) {
