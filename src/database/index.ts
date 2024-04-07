@@ -2,7 +2,7 @@ import mongoose, { Schema, model } from 'mongoose';
 import { IIdentity } from 'cesieats-service-types/src/identity';
 
 export const identitySchema = new Schema<IIdentity>({
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   apiKey: { type: String, required: false },
 });
