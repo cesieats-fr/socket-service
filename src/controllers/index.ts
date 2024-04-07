@@ -30,7 +30,7 @@ const controller = {
   deleteIdentity,
   editIdentity,
   createApiKeyIdentity,
-  verifyApiKeyIdentity
+  verifyApiKeyIdentity,
 };
 
 export default controller;

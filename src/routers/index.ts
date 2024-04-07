@@ -1,11 +1,11 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Router } from 'express';
 import controller from '../controllers';
 
 const router: Router = express.Router();
 
 router.post('/register', controller.registerIdentity);
 
-router.post('/login', controller.loginIdentity );
+router.post('/login', controller.loginIdentity);
 
 router.put('/edit/{id}', controller.editIdentity);
 

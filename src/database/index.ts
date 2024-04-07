@@ -1,25 +1,19 @@
-// import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
+import { IIdentity } from 'cesieats-service-types/src/identity';
 
-// export const accountSchema = new Schema<IAccount>({
-//   id: { type: Number, required: true },
-//   email: { type: String, required: true },
-//   password: { type: String, required: true },
-// });
+export const identitySchema = new Schema<IIdentity>({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  apiKey: { type: String, required: false },
+});
 
-// export const Account = model<IAccount>('Account', accountSchema);
-import mongoose from 'mongoose';
+export const Identity = model<IIdentity>('Identity', identitySchema);
 
-export const connectMongoose = () => {
-  mongoose
-    .connect('mongodb://192.168.2.30:32000/', {
-      dbName: 'cesieats-service',
-      user: process.env.DB_USERNAME,
-      pass: process.env.DB_PASSWORD,
-    })
-    .then(() => {
-      console.log('Connected to the database');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+export async function connectMongoose() {
+  await mongoose.connect(`mongodb://${process.env.DB_URL}/`, {
+    dbName: 'cesieats-service',
+    user: process.env.DB_USERNAME,
+    pass: process.env.DB_PASSWORD,
+  });
+  console.log('Connected to MongoDB ');
+}
