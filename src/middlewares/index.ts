@@ -4,17 +4,12 @@ import jwt from 'jsonwebtoken';
 
 export const middleware: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(' ')[1];
-  console.log('Token :', token);
   if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
   jwt.verify(token, process.env.JWT_KEY!, (err, decoded) => {
-    console.log('Decoded :', decoded);
-    console.log('Error :', err);
     if (err) return res.status(401).json({ message: 'Unauthorized' });
 
     res.locals.identity = decoded;
     next();
   });
-
-  res.status(401).json({ message: 'Unauthorized' });
 };

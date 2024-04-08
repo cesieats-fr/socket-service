@@ -75,11 +75,7 @@ const editIdentity = async (req: Request, res: Response) => {
 //Crée et associe une clé Appi à une identité connectée
 const createApiKeyIdentity = async (req: Request, res: Response) => {
   try {
-    console.log('res.locals.identity: ', res.locals.identity);
     let apiKey = crypto.randomUUID();
-    console.log('apiKey: ', apiKey);
-    const searchIdentity = await Identity.find({ apiKey: apiKey });
-    console.log('searchIdentity: ', searchIdentity);
     while ((await Identity.find({ apiKey: apiKey })) != null) {
       apiKey = crypto.randomUUID();
     }
