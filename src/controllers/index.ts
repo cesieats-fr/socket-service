@@ -28,15 +28,13 @@ const registerIdentity = async (req: Request, res: Response) => {
 const loginIdentity = async (req: Request, res: Response) => {
   try {
     const identity: IIdentity = {
-      email: req.body.email,
-      password: req.body.password,
+      email: req.body.data.email,
+      password: req.body.data.password,
     };
-    console.log('identity: ', identity);
-    console.log('req.body: ', req.body);
+
     const result = await Identity.findOne(identity);
-    console.log('result: ', result);
     if (!result) {
-      res.status(404).json({ message: 'email/password not found or incorrect' });
+      return res.status(404).json({ message: 'email/password not found or incorrect' });
     }
 
     const token = jwt.sign(identity, process.env.JWT_KEY!);
