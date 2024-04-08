@@ -11,7 +11,7 @@ router.post('/login', controller.loginIdentity);
 router.use(middleware);
 
 // Private
-router.put('/edit/{id}', controller.editIdentity);
+router.put('/edit', controller.editIdentity);
 router.post('/createApiKey', controller.createApiKeyIdentity);
 router.post('/verifyApiKey', controller.verifyApiKeyIdentity);
 
