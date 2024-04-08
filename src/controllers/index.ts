@@ -78,9 +78,9 @@ const createApiKeyIdentity = async (req: Request, res: Response) => {
     console.log('res.locals.identity: ', res.locals.identity);
     let apiKey = crypto.randomUUID();
     console.log('apiKey: ', apiKey);
-    const searchIdentity = Identity.find({ apiKey: apiKey });
+    const searchIdentity = await Identity.find({ apiKey: apiKey });
     console.log('searchIdentity: ', searchIdentity);
-    while (Identity.find({ apiKey: apiKey }) != null) {
+    while ((await Identity.find({ apiKey: apiKey })) != null) {
       apiKey = crypto.randomUUID();
     }
     await Identity.replaceOne({ email: res.locals.identity.email }, { apiKey: apiKey });
