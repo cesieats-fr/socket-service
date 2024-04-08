@@ -31,8 +31,10 @@ const loginIdentity = async (req: Request, res: Response) => {
       email: req.body.email,
       password: req.body.password,
     };
+    console.log('identity: ', identity);
+    console.log('req.body: ', req.body);
     const result = await Identity.findOne(identity);
-
+    console.log('result: ', result);
     if (!result) {
       res.status(404).json({ message: 'email/password not found or incorrect' });
     }
