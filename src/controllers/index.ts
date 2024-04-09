@@ -12,14 +12,10 @@ const registerIdentity = async (req: Request, res: Response) => {
     };
     const result = await Identity.create(identity);
 
-    console.log('identity: ', identity);
-    console.log('result: ', result);
-
-    const token = jwt.sign(identity, process.env.JWT_KEY!);
+    const token = jwt.sign(result, process.env.JWT_KEY!);
 
     res.status(200).json(token);
   } catch (error) {
-    console.log('[IDENTITY-SERVICE] registerIdentity error: ', error);
     res.status(400).json({ message: 'an unexpected error occurred' });
   }
 };
@@ -32,6 +28,11 @@ const loginIdentity = async (req: Request, res: Response) => {
       password: req.body.data.password,
     };
 
+    console.log(req.body);
+    console.log(req.body.data);
+    console.log(req.headers);
+    console.log(req.header);
+
     const result = await Identity.findOne(identity);
     if (!result) {
       return res.status(404).json({ message: 'email/password not found or incorrect' });
@@ -40,7 +41,6 @@ const loginIdentity = async (req: Request, res: Response) => {
     const token = jwt.sign(identity, process.env.JWT_KEY!);
     res.status(200).json(token);
   } catch (error) {
-    console.log('[IDENTITY-SERVICE] loginIdentity error: ', error);
     res.status(400).json({ message: 'an unexpected error occurred' });
   }
 };
