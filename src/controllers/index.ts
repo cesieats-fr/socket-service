@@ -24,14 +24,9 @@ const registerIdentity = async (req: Request, res: Response) => {
 const loginIdentity = async (req: Request, res: Response) => {
   try {
     const identity: IIdentity = {
-      email: req.body.data.email,
-      password: req.body.data.password,
+      email: req.body.email,
+      password: req.body.password,
     };
-
-    console.log(req.body);
-    console.log(req.body.data);
-    console.log(req.headers);
-    console.log(req.header);
 
     const result = await Identity.findOne(identity);
     if (!result) {

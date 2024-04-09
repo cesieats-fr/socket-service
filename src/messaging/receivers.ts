@@ -26,6 +26,16 @@ class Receivers implements IReceivers {
     });
   }
 
+  async receiveSocketEvent() {
+    await this.channel.assertQueue('socketEvent');
+    this.channel.consume('socketEvent', (message: ConsumeMessage | null) => {
+      if (message) {
+        console.log('Received message:', message.content.toString());
+        this.channel.ack(message);
+      }
+    });
+  }
+
   disconnect() {
     this.channel.deleteQueue('hello');
   }

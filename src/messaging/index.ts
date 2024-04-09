@@ -1,27 +1,37 @@
-import * as amqp from 'amqplib';
+import { Connection, Channel, connect } from 'amqplib';
 import Senders from './senders';
 import Receivers from './receivers';
+import SocketService from '../socket';
 
 export let messaging: Messaging;
 
 interface IMessaging {
-  connection: amqp.Connection;
+  connection: Connection;
   senders: Senders;
   receivers: Receivers;
-  channel: amqp.Channel;
+  channel: Channel;
+  socketService: SocketService;
 }
 
 class Messaging implements IMessaging {
-  connection: amqp.Connection;
+  connection: Connection;
   senders: Senders;
   receivers: Receivers;
-  channel: amqp.Channel;
+  channel: Channel;
+  socketService: SocketService;
 
-  constructor(connection: amqp.Connection, channel: amqp.Channel, senders: Senders, receivers: Receivers) {
+  constructor(
+    connection: Connection,
+    channel: Channel,
+    senders: Senders,
+    receivers: Receivers,
+    socketService: SocketService,
+  ) {
     this.connection = connection;
     this.senders = senders;
     this.receivers = receivers;
     this.channel = channel;
+    this.socketService = socketService;
   }
 
   disconnect() {
@@ -31,15 +41,15 @@ class Messaging implements IMessaging {
   }
 }
 
-export async function connectRabbitMQ() {
-  const connection = await amqp.connect(`amqp://${process.env.RABBITMQ_URL}`, {
+export async function connectRabbitMQ(socketService: SocketService) {
+  const connection = await connect(`amqp://${process.env.RABBITMQ_URL}`, {
     username: process.env.RABBITMQ_USERNAME,
     password: process.env.RABBITMQ_PASSWORD,
   });
   const channel = await connection.createChannel();
   const receivers = new Receivers(channel);
   const senders = new Senders(channel);
-  messaging = new Messaging(connection, channel, senders, receivers);
+  messaging = new Messaging(connection, channel, senders, receivers, socketService);
   console.log('Connected to RabbitMQ ');
 }
 
