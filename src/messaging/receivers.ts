@@ -36,9 +36,14 @@ class Receivers implements IReceivers {
     await this.channel.assertQueue('socketEvent');
     this.channel.consume('socketEvent', (message: ConsumeMessage | null) => {
       if (message) {
-        const socketEvent: ISocketEvent = JSON.parse(message.content.toString());
-        this.socketService.sendToUser(socketEvent);
-        this.channel.ack(message);
+        try {
+          const socketEvent: ISocketEvent = JSON.parse(message.content.toString());
+          this.socketService.sendToUser(socketEvent);
+          this.channel.ack(message);
+        } catch (error) {
+          this.channel.ack(message);
+          console.error('Error while parsing message:', error);
+        }
       }
     });
   }
