@@ -6,11 +6,7 @@ class SocketService {
   io: Server;
 
   constructor(port: number) {
-    this.io = new Server().listen(port, {
-      cors: {
-        origin: '*',
-      },
-    });
+    this.io = new Server({ cors: { origin: '*' } }).listen(port);
     this.connectedSockets = [];
     this.start();
   }
