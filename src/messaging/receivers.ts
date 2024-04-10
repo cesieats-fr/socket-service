@@ -32,7 +32,8 @@ class Receivers implements IReceivers {
     this.channel.consume('socketEvent', (message: ConsumeMessage | null) => {
       if (message) {
         console.log('Received message:', message.content.toString());
-        console.log(message.content);
+        const value = JSON.parse(message.content.toString());
+        console.log('Received message:', value);
         this.channel.ack(message);
       }
     });
