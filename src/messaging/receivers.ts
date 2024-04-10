@@ -1,14 +1,19 @@
 import { Channel, ConsumeMessage } from 'amqplib';
+import SocketService from '../socket';
+import { ISocketEvent } from 'cesieats-service-types/src/socket';
 
 interface IReceivers {
   channel: Channel;
+  socketService: SocketService;
 }
 
 class Receivers implements IReceivers {
   channel: Channel;
+  socketService: SocketService;
 
-  constructor(channel: Channel) {
+  constructor(channel: Channel, socketService: SocketService) {
     this.channel = channel;
+    this.socketService = socketService;
     this.loadReceivers();
   }
 
@@ -31,9 +36,8 @@ class Receivers implements IReceivers {
     await this.channel.assertQueue('socketEvent');
     this.channel.consume('socketEvent', (message: ConsumeMessage | null) => {
       if (message) {
-        console.log('Received message:', message.content.toString());
-        const value = JSON.parse(message.content.toString());
-        console.log('Received message:', value);
+        const socketEvent: ISocketEvent = JSON.parse(message.content.toString());
+        this.socketService.sendToUser(socketEvent);
         this.channel.ack(message);
       }
     });

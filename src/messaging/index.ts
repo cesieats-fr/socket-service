@@ -10,7 +10,6 @@ interface IMessaging {
   senders: Senders;
   receivers: Receivers;
   channel: Channel;
-  socketService: SocketService;
 }
 
 class Messaging implements IMessaging {
@@ -18,20 +17,12 @@ class Messaging implements IMessaging {
   senders: Senders;
   receivers: Receivers;
   channel: Channel;
-  socketService: SocketService;
 
-  constructor(
-    connection: Connection,
-    channel: Channel,
-    senders: Senders,
-    receivers: Receivers,
-    socketService: SocketService,
-  ) {
+  constructor(connection: Connection, channel: Channel, senders: Senders, receivers: Receivers) {
     this.connection = connection;
     this.senders = senders;
     this.receivers = receivers;
     this.channel = channel;
-    this.socketService = socketService;
   }
 
   disconnect() {
@@ -47,9 +38,9 @@ export async function connectRabbitMQ(socketService: SocketService) {
     password: process.env.RABBITMQ_PASSWORD,
   });
   const channel = await connection.createChannel();
-  const receivers = new Receivers(channel);
+  const receivers = new Receivers(channel, socketService);
   const senders = new Senders(channel);
-  messaging = new Messaging(connection, channel, senders, receivers, socketService);
+  messaging = new Messaging(connection, channel, senders, receivers);
   console.log('Connected to RabbitMQ ');
 }
 

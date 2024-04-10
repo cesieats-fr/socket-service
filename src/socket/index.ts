@@ -1,12 +1,8 @@
 import { Server, Socket } from 'socket.io';
-
-interface SocketAccountId {
-  userId: string;
-  socketId: string;
-}
+import { ISocketAccountId, ISocketEvent } from 'cesieats-service-types/src/socket';
 
 class SocketService {
-  connectedSockets: SocketAccountId[];
+  connectedSockets: ISocketAccountId[];
   io: Server;
 
   constructor(port: number) {
@@ -17,7 +13,7 @@ class SocketService {
 
   public start() {
     this.io.on('connection', (socket: Socket) => {
-      const socketAccountId: SocketAccountId = {
+      const socketAccountId: ISocketAccountId = {
         socketId: socket.id,
         userId: socket.handshake.query.userId! as string,
       };
@@ -29,9 +25,10 @@ class SocketService {
     });
   }
 
-  public sendToUser(userId: string, event: string, data: unknown) {
+  public sendToUser({ userId, event, data }: ISocketEvent) {
     const socketId = this.connectedSockets.find((s) => s.userId === userId)?.socketId;
     if (socketId) {
+      console.log(`Sending event ${event} to user ${userId}`);
       this.io.to(socketId).emit(event, data);
     }
   }
