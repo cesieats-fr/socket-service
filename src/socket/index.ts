@@ -15,7 +15,7 @@ class SocketService {
     this.io.on('connection', (socket: Socket) => {
       const socketAccountId: ISocketAccountId = {
         socketId: socket.id,
-        userId: socket.handshake.query.userId! as string,
+        accountId: socket.handshake.query.accountId! as string,
       };
       this.connectedSockets.push(socketAccountId);
 
@@ -25,10 +25,11 @@ class SocketService {
     });
   }
 
-  public sendToUser({ userId, event, data }: ISocketEvent) {
-    const socketId = this.connectedSockets.find((s) => s.userId === userId)?.socketId;
+  public sendToUser({ accountId, event, data }: ISocketEvent) {
+    console.log(accountId, event, data);
+    const socketId = this.connectedSockets.find((s) => s.accountId === accountId)?.socketId;
     if (socketId) {
-      console.log(`Sending event ${event} to user ${userId}`);
+      console.log(`Sending event ${event} to user ${accountId}`);
       this.io.to(socketId).emit(event, data);
     }
   }
