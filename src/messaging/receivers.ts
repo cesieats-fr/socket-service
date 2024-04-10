@@ -14,6 +14,7 @@ class Receivers implements IReceivers {
 
   loadReceivers() {
     this.receiveHelloWorld();
+    this.receiveSocketEvent();
   }
 
   async receiveHelloWorld() {
@@ -31,6 +32,7 @@ class Receivers implements IReceivers {
     this.channel.consume('socketEvent', (message: ConsumeMessage | null) => {
       if (message) {
         console.log('Received message:', message.content.toString());
+        console.log(message.content);
         this.channel.ack(message);
       }
     });
