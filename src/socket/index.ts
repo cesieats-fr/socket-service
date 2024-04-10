@@ -26,12 +26,11 @@ class SocketService {
   }
 
   public sendToUser({ accountId, event, data }: ISocketEvent) {
-    console.log(accountId, event, data);
-    const socketId = this.connectedSockets.find((s) => s.accountId === accountId)?.socketId;
-    if (socketId) {
-      console.log(`Sending event ${event} to user ${accountId}`);
-      this.io.to(socketId).emit(event, data);
-    }
+    this.connectedSockets.forEach((s) => {
+      if (s.accountId === accountId) {
+        this.io.to(s.socketId).emit(event, data);
+      }
+    });
   }
 }
 
